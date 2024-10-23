@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors')
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const dotenv = require('dotenv');
@@ -6,6 +7,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const app = express();
+app.use(cors());
 app.use(bodyParser.json());
 
 // connecting db 
@@ -31,9 +33,9 @@ app.get('/', (req, res) => {
 app.post('/submit_form', (req, res) => {
     const { 
         name, 
-        roll_no, 
+        rollno,       // Correct the key to match the form field
         email, 
-        phone_no, 
+        phone,        // Changed from phone_no to match the form field
         father_name, 
         mother_name, 
         year, 
@@ -43,7 +45,7 @@ app.post('/submit_form', (req, res) => {
 
     const sql = 'INSERT INTO form_data (name, roll_no, email, phone_no, father_name, mother_name, year, nationality, gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
-    db.query(sql, [name, roll_no, email, phone_no, father_name, mother_name, year, nationality, gender], (err, result) => {
+    db.query(sql, [name, rollno, email, phone, father_name, mother_name, year, nationality, gender], (err, result) => {
         if (err) throw err;
         res.json({ message: 'Form submitted successfully!' });
     });
